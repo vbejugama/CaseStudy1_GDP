@@ -25,7 +25,7 @@ setwd(rootDir)
 setwd(scriptDir)
 
 # calling the Data downloding script
-source("Data_Gather.R", echo =T, keep.source = T)   
+source("Data_Gather.R", echo =T, keep.source = T,  max.deparse.length = 500)   
 ```
 
 ```
@@ -35,7 +35,9 @@ source("Data_Gather.R", echo =T, keep.source = T)
 ## > # Vivek Bejugama
 ## > # October 20, 2016
 ## > ###############################
-##  .... [TRUNCATED] 
+## > 
+## > #Libraries
+## > library(downloader)
 ## 
 ## > #Initializing the Project Directories
 ## > rootDir <- "C://Users//vivek//Documents//R//R_Projects//CaseStudy1_GDP"
@@ -67,7 +69,7 @@ setwd(rootDir)
 setwd(scriptDir) 
 
 # Calling the Data Preparation script
-source("Data_Prep.R", echo =T, keep.source = T)
+source("Data_Prep.R", echo =T, keep.source = T, max.deparse.length = 500)
 ```
 
 ```
@@ -76,7 +78,10 @@ source("Data_Prep.R", echo =T, keep.source = T)
 ## > # Preparing Tidy Data and Merging to create a final clean dataset. 
 ## > # Vivek Bejugama
 ## > # October 20, 2016
-## > #### .... [TRUNCATED] 
+## > ###############################
+## > 
+## > #Libraries
+## > library(plyr)
 ## 
 ## > #Initialize working Directories
 ## > setwd(rootDir)
@@ -144,7 +149,7 @@ source("Data_Prep.R", echo =T, keep.source = T)
 ## 234          ZWE        Zimbabwe          Low income
 ## 
 ## > #Creating Single Final cleann DataFrame by left join with GDP to Education dataset
-## > gdp_edu <- merge(x = cln_GDP, y = cln_EDU, by = "Country_Code", .... [TRUNCATED] 
+## > gdp_edu <- merge(x = cln_GDP, y = cln_EDU, by = "Country_Code", all.x = T ) 
 ## 
 ## > #Sample Education dataset
 ## > str(gdp_edu)
@@ -201,7 +206,7 @@ setwd(rootDir)
 setwd(scriptDir) 
 
 # Calling the Data Analysis script
-source("Data_Analysis.R", echo =T, keep.source = T)
+source("Data_Analysis.R", echo =T, keep.source = T,  max.deparse.length = 500)
 ```
 
 ```
@@ -213,7 +218,7 @@ source("Data_Analysis.R", echo =T, keep.source = T)
 ## > #########
 ## > 
 ## > #No. of ID's matching
-## > count(is.na(gdp_edu$Countr .... [TRUNCATED] 
+## > count(is.na(gdp_edu$Country.y))   # 1 Country from GDP data is missing in Education Dataset
 ##       x freq
 ## 1 FALSE  189
 ## 2  TRUE    1
@@ -244,11 +249,11 @@ source("Data_Analysis.R", echo =T, keep.source = T)
 ## 93          KNA St. Kitts and Nevis      767
 ## 
 ## > #Average GDP Ranking of High income: OECD members
-## > mean(gdp_edu[which(gdp_edu$Income_Group == "High income: OECD" & is.na(gdp_edu$Rank) == F ),c("R ..." ... [TRUNCATED] 
+## > mean(gdp_edu[which(gdp_edu$Income_Group == "High income: OECD" & is.na(gdp_edu$Rank) == F ),c("Rank")])
 ## [1] 32.96667
 ## 
 ## > #Average GDP Ranking of High income: nonOECD members
-## > mean(gdp_edu[which(gdp_edu$Income_Group == "High income: nonOECD" & is.na(gdp_edu$Rank) == F  .... [TRUNCATED] 
+## > mean(gdp_edu[which(gdp_edu$Income_Group == "High income: nonOECD" & is.na(gdp_edu$Rank) == F ),c("Rank")])
 ## [1] 91.91304
 ```
 
@@ -261,7 +266,7 @@ setwd(rootDir)
 setwd(scriptDir) 
 
 # Calling the Data Plot script
-source("Data_Present.R", echo =T, keep.source = T)
+source("Data_Present.R", echo =T, keep.source = T, max.deparse.length = 500)
 ```
 
 ```
@@ -276,7 +281,10 @@ source("Data_Present.R", echo =T, keep.source = T)
 ## > library(ggplot2)
 ## 
 ## > #A Plot with coutries GDP for each Income Group, sized according to their Rank.
-## > ggplot(gdp_edu, aes(x=gdp_edu$GDP_2012, y=gdp_edu$Income_Group)) + .... [TRUNCATED]
+## > ggplot(gdp_edu, aes(x=gdp_edu$GDP_2012, y=gdp_edu$Income_Group)) + 
+## +   geom_point(aes(colour=Income_Group, size = Rank)) +
+## +   scale_x_log10(name="Country's GDP (Log Transformed)") +    #since the GDP as right skewed they are log transformed.
+## +   scale_y_discrete(name="Income Group")
 ```
 
 ```
@@ -294,7 +302,7 @@ setwd(rootDir)
 setwd(scriptDir) 
 
 # Calling the Data Analysis script
-source("Data_Quantile.R", echo =T, keep.source = T)
+source("Data_Quantile.R", echo =T, keep.source = T, max.deparse.length = 500)
 ```
 
 ```
@@ -308,7 +316,11 @@ source("Data_Quantile.R", echo =T, keep.source = T)
 ## > library(ggplot2)
 ## 
 ## > # Adding a new Column to the dataframe with its corresponding Quantile group divided into 5(20%,40%,60%,80%) groups
-## > sorted_gdp_edu$quartile <- wit .... [TRUNCATED] 
+## > sorted_gdp_edu$quartile <- with(sorted_gdp_edu, factor(
+## +   findInterval( sorted_gdp_edu$GDP_2012, c(-Inf,
+## +                        quantile(sorted_gdp_edu$GDP_2012, probs=c(0.2, 0.4, .6, .8)), Inf)), 
+## +   labels=c("Q1","Q2","Q3","Q4","Q5")
+## + ))
 ## 
 ## > group20 <- subset(sorted_gdp_edu,quartile == "Q1")   #lowest Quartile
 ## 

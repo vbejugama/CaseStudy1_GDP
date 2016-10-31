@@ -28,7 +28,7 @@ setwd(rootDir)
 setwd(scriptDir)
 
 # calling the Data downloding script
-source("Data_Gather.R", echo =T, keep.source = T)   
+source("Data_Gather.R", echo =T, keep.source = T,  max.deparse.length = 500)   
 ```
 
 Creating a final clean merged dataset 
@@ -38,7 +38,7 @@ setwd(rootDir)
 setwd(scriptDir) 
 
 # Calling the Data Preparation script
-source("Data_Prep.R", echo =T, keep.source = T)
+source("Data_Prep.R", echo =T, keep.source = T, max.deparse.length = 500)
 ```
 
 ##Analysis of the merged clean Data frames
@@ -52,7 +52,7 @@ setwd(rootDir)
 setwd(scriptDir) 
 
 # Calling the Data Analysis script
-source("Data_Analysis.R", echo =T, keep.source = T)
+source("Data_Analysis.R", echo =T, keep.source = T,  max.deparse.length = 500)
 ```
 
 ##Ploting the GDP vs income group
@@ -63,7 +63,7 @@ setwd(rootDir)
 setwd(scriptDir) 
 
 # Calling the Data Plot script
-source("Data_Present.R", echo =T, keep.source = T)
+source("Data_Present.R", echo =T, keep.source = T, max.deparse.length = 500)
 ```
 
 ##Dividing the data into 5 Quartile Gorups.
@@ -74,7 +74,7 @@ setwd(rootDir)
 setwd(scriptDir) 
 
 # Calling the Data Analysis script
-source("Data_Quantile.R", echo =T, keep.source = T)
+source("Data_Quantile.R", echo =T, keep.source = T, max.deparse.length = 500)
 ```
 
 ##Conclusion

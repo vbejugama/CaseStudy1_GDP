@@ -140,14 +140,16 @@ setwd(rootDir)
 setwd(scriptDir)
 
 # calling the Data downloding script
-source(&quot;Data_Gather.R&quot;, echo =T, keep.source = T)   </code></pre>
+source(&quot;Data_Gather.R&quot;, echo =T, keep.source = T,  max.deparse.length = 500)   </code></pre>
 <pre><code>## 
 ## &gt; ###############################
 ## &gt; # Script for Downloading Raw Data Files
 ## &gt; # Vivek Bejugama
 ## &gt; # October 20, 2016
 ## &gt; ###############################
-##  .... [TRUNCATED] 
+## &gt; 
+## &gt; #Libraries
+## &gt; library(downloader)
 ## 
 ## &gt; #Initializing the Project Directories
 ## &gt; rootDir &lt;- &quot;C://Users//vivek//Documents//R//R_Projects//CaseStudy1_GDP&quot;
@@ -175,13 +177,16 @@ setwd(rootDir)
 setwd(scriptDir) 
 
 # Calling the Data Preparation script
-source(&quot;Data_Prep.R&quot;, echo =T, keep.source = T)</code></pre>
+source(&quot;Data_Prep.R&quot;, echo =T, keep.source = T, max.deparse.length = 500)</code></pre>
 <pre><code>## 
 ## &gt; ###############################
 ## &gt; # Preparing Tidy Data and Merging to create a final clean dataset. 
 ## &gt; # Vivek Bejugama
 ## &gt; # October 20, 2016
-## &gt; #### .... [TRUNCATED] 
+## &gt; ###############################
+## &gt; 
+## &gt; #Libraries
+## &gt; library(plyr)
 ## 
 ## &gt; #Initialize working Directories
 ## &gt; setwd(rootDir)
@@ -249,7 +254,7 @@ source(&quot;Data_Prep.R&quot;, echo =T, keep.source = T)</code></pre>
 ## 234          ZWE        Zimbabwe          Low income
 ## 
 ## &gt; #Creating Single Final cleann DataFrame by left join with GDP to Education dataset
-## &gt; gdp_edu &lt;- merge(x = cln_GDP, y = cln_EDU, by = &quot;Country_Code&quot;, .... [TRUNCATED] 
+## &gt; gdp_edu &lt;- merge(x = cln_GDP, y = cln_EDU, by = &quot;Country_Code&quot;, all.x = T ) 
 ## 
 ## &gt; #Sample Education dataset
 ## &gt; str(gdp_edu)
@@ -307,7 +312,7 @@ setwd(rootDir)
 setwd(scriptDir) 
 
 # Calling the Data Analysis script
-source(&quot;Data_Analysis.R&quot;, echo =T, keep.source = T)</code></pre>
+source(&quot;Data_Analysis.R&quot;, echo =T, keep.source = T,  max.deparse.length = 500)</code></pre>
 <pre><code>## 
 ## &gt; #########
 ## &gt; # Scirpt to Analyse the data
@@ -316,7 +321,7 @@ source(&quot;Data_Analysis.R&quot;, echo =T, keep.source = T)</code></pre>
 ## &gt; #########
 ## &gt; 
 ## &gt; #No. of ID's matching
-## &gt; count(is.na(gdp_edu$Countr .... [TRUNCATED] 
+## &gt; count(is.na(gdp_edu$Country.y))   # 1 Country from GDP data is missing in Education Dataset
 ##       x freq
 ## 1 FALSE  189
 ## 2  TRUE    1
@@ -347,11 +352,11 @@ source(&quot;Data_Analysis.R&quot;, echo =T, keep.source = T)</code></pre>
 ## 93          KNA St. Kitts and Nevis      767
 ## 
 ## &gt; #Average GDP Ranking of High income: OECD members
-## &gt; mean(gdp_edu[which(gdp_edu$Income_Group == &quot;High income: OECD&quot; &amp; is.na(gdp_edu$Rank) == F ),c(&quot;R ...&quot; ... [TRUNCATED] 
+## &gt; mean(gdp_edu[which(gdp_edu$Income_Group == &quot;High income: OECD&quot; &amp; is.na(gdp_edu$Rank) == F ),c(&quot;Rank&quot;)])
 ## [1] 32.96667
 ## 
 ## &gt; #Average GDP Ranking of High income: nonOECD members
-## &gt; mean(gdp_edu[which(gdp_edu$Income_Group == &quot;High income: nonOECD&quot; &amp; is.na(gdp_edu$Rank) == F  .... [TRUNCATED] 
+## &gt; mean(gdp_edu[which(gdp_edu$Income_Group == &quot;High income: nonOECD&quot; &amp; is.na(gdp_edu$Rank) == F ),c(&quot;Rank&quot;)])
 ## [1] 91.91304</code></pre>
 </div>
 <div id="ploting-the-gdp-vs-income-group" class="section level2">
@@ -364,7 +369,7 @@ setwd(rootDir)
 setwd(scriptDir) 
 
 # Calling the Data Plot script
-source(&quot;Data_Present.R&quot;, echo =T, keep.source = T)</code></pre>
+source(&quot;Data_Present.R&quot;, echo =T, keep.source = T, max.deparse.length = 500)</code></pre>
 <pre><code>## 
 ## &gt; #########
 ## &gt; # Scirpt to Presenting the data
@@ -376,7 +381,10 @@ source(&quot;Data_Present.R&quot;, echo =T, keep.source = T)</code></pre>
 ## &gt; library(ggplot2)
 ## 
 ## &gt; #A Plot with coutries GDP for each Income Group, sized according to their Rank.
-## &gt; ggplot(gdp_edu, aes(x=gdp_edu$GDP_2012, y=gdp_edu$Income_Group)) + .... [TRUNCATED]</code></pre>
+## &gt; ggplot(gdp_edu, aes(x=gdp_edu$GDP_2012, y=gdp_edu$Income_Group)) + 
+## +   geom_point(aes(colour=Income_Group, size = Rank)) +
+## +   scale_x_log10(name=&quot;Country's GDP (Log Transformed)&quot;) +    #since the GDP as right skewed they are log transformed.
+## +   scale_y_discrete(name=&quot;Income Group&quot;)</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
 <p><img src="data:image/png;base64,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" alt /><!-- --></p>
 </div>
@@ -390,7 +398,7 @@ setwd(rootDir)
 setwd(scriptDir) 
 
 # Calling the Data Analysis script
-source(&quot;Data_Quantile.R&quot;, echo =T, keep.source = T)</code></pre>
+source(&quot;Data_Quantile.R&quot;, echo =T, keep.source = T, max.deparse.length = 500)</code></pre>
 <pre><code>## 
 ## &gt; #########
 ## &gt; # Scirpt to Divide Data into 5 Qantiles
@@ -401,7 +409,11 @@ source(&quot;Data_Quantile.R&quot;, echo =T, keep.source = T)</code></pre>
 ## &gt; library(ggplot2)
 ## 
 ## &gt; # Adding a new Column to the dataframe with its corresponding Quantile group divided into 5(20%,40%,60%,80%) groups
-## &gt; sorted_gdp_edu$quartile &lt;- wit .... [TRUNCATED] 
+## &gt; sorted_gdp_edu$quartile &lt;- with(sorted_gdp_edu, factor(
+## +   findInterval( sorted_gdp_edu$GDP_2012, c(-Inf,
+## +                        quantile(sorted_gdp_edu$GDP_2012, probs=c(0.2, 0.4, .6, .8)), Inf)), 
+## +   labels=c(&quot;Q1&quot;,&quot;Q2&quot;,&quot;Q3&quot;,&quot;Q4&quot;,&quot;Q5&quot;)
+## + ))
 ## 
 ## &gt; group20 &lt;- subset(sorted_gdp_edu,quartile == &quot;Q1&quot;)   #lowest Quartile
 ## 
