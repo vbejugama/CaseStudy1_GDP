@@ -1,0 +1,88 @@
+---
+title: "CaseStudy1_GDP"
+author: "Vivek Bejugama"
+date: "October 27, 2016"
+output: 
+  html_document:
+    keep_md: true
+---
+
+##Intoduction:
+The following is the end-to-end(downloading data to reporting) analysis of countires GDP vs their respective income groups classifications. 
+
+```{r}
+#Initializing the project variables:
+rootDir <- "C://Users//vivek//Documents//R//R_Projects//CaseStudy1_GDP"
+fileDir <- ".//Data_Files"
+scriptDir <- ".//Scripts"
+setwd(rootDir)
+```
+
+##DownLoading and Preparing tidy-data for analysis
+Gathering the raw data from The World Bank website.
+GDP - http://data.worldbank.org/data-catalog/GDP-ranking-table
+Education - http://data.worldbank.org/data-catalog/ed-stats
+```{r}
+#Moving to the scirpts directory
+setwd(rootDir)
+setwd(scriptDir)
+
+# calling the Data downloding script
+source("Data_Gather.R", echo =T, keep.source = T)   
+```
+
+Creating a final clean merged dataset 
+```{r}
+#Moving to the scirpts directory
+setwd(rootDir)
+setwd(scriptDir) 
+
+# Calling the Data Preparation script
+source("Data_Prep.R", echo =T, keep.source = T)
+```
+
+##Analysis of the merged clean Data frames
+a. No. of missing matches  
+b. Sorting the merged Data Frame ascending order of GDP.
+c. 13th Country in the sorted data
+d. Average GDP rankings for the "high income: OECD" and "High income: non OECD" gorups
+```{r}
+#Moving to the scirpts directory
+setwd(rootDir)
+setwd(scriptDir) 
+
+# Calling the Data Analysis script
+source("Data_Analysis.R", echo =T, keep.source = T)
+```
+
+##Ploting the GDP vs income group
+a. Plot of all countires by income groups seperated by differnt colours
+```{r}
+#Moving to the scirpts directory
+setwd(rootDir)
+setwd(scriptDir) 
+
+# Calling the Data Plot script
+source("Data_Present.R", echo =T, keep.source = T)
+```
+
+##Dividing the data into 5 Quartile Gorups.
+a. GDP ranking divided into 5 quartile groups
+```{r}
+#Moving to the scirpts directory
+setwd(rootDir)
+setwd(scriptDir) 
+
+# Calling the Data Analysis script
+source("Data_Quantile.R", echo =T, keep.source = T)
+```
+
+##Conclusion
+From the above analysis we see we have about 5 countries thought they fall under lower middle income by income group they are still in top 20 percentile. 
+The GDP is highly right skeewed for each income group suggesting there are few countries in each income group having way more GDP than rest in the group. 
+High income:OECD member group have slightly greater mean and lower varience than the rest of the group.
+Since this is an observational study we can not define cause and effect for the income level group and the GDP of the country.
+
+
+
+
